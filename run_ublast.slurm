@@ -25,5 +25,5 @@ mkdir -p temp_ublast_${t_n}
 
 ## gene calculating
 cut -f2,4 temp_ublast_${t_n}/${b_n}_${t_n}_ublast_out | awk -F ' ' '{s[$1]+=$2} END{for(i in s) print(i,s[i])}' OFS='\t' | sort -k1,1 > temp_ublast_${t_n}/summed_alignment_length_${b_n}_${t_n}
-join -o 1.1,1.2,2.2 temp_ublast_${t_n}/summed_alignment_length_${b_n}_${t_n} $db/${t_n}_length | awk -F ' ' '{$4=$2/$3; print $0}' OFS='\t' | sed "1i ${t_n}\tsummed_alignment_length\tgene_length\t${b_n}_coverage" > temp_ublast_${t_n}/coverage_${b_n}_${t_n}
+join -o 1.1,1.2,2.2 temp_ublast_${t_n}/summed_alignment_length_${b_n}_${t_n} $db/${t_n}_length_sort | awk -F ' ' '{$4=$2/$3; print $0}' OFS='\t' | sed "1i ${t_n}\tsummed_alignment_length\tgene_length\t${b_n}_coverage" > temp_ublast_${t_n}/coverage_${b_n}_${t_n}
 cut -f4 temp_ublast_${t_n}/coverage_${b_n}_${t_n} > results_ublast_${t_n}/4_coverage_${b_n}_${t_n}

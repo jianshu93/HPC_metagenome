@@ -33,7 +33,8 @@ cwd=$(pwd) ;
 sed -i 's/ /_/g' $target_genes_dir/${target_gene_name}.fa
 ### length
 if [ ! -f "$target_genes_dir/${target_gene_name}_length" ] ; then
-  sed 's/ /_/g' $target_genes_dir/${target_gene_name}.fa | awk '/^>/&&NR>1{print "";}{ printf "%s",/^>/ ? $0" ":$0 }' | awk '{print $1"\t"length($2)}' | sed -e 's/^>//' | sort -k1,1 > $target_genes_dir/${target_gene_name}_length ;
+  sed 's/ /_/g' $target_genes_dir/${target_gene_name}.fa | awk '/^>/&&NR>1{print "";}{ printf "%s",/^>/ ? $0" ":$0 }' | awk '{print $1"\t"length($2)}' | sed -e 's/^>//' > $target_genes_dir/${target_gene_name}_length ;
+  sort -k1,1 $target_genes_dir/${target_gene_name}_length > $target_genes_dir/${target_gene_name}_length_sort
 else
   ### index for ublast (optional)
   ## PATH/TO/usearch -makeudb_ublast $target_genes -output $target_genes/${target_gene_name}.udb
@@ -42,7 +43,7 @@ else
     EXTRA="" ;
     EXTRA_MSG="" ;
     if [[ $k -ge $MAX ]] ; then
-       let prek=$k-$MAX ;
+       let prek=$k-${MAX}+1;
        echo "There remained $prek fastq file"
        EXTRA="-W depend=afterany:${jids[$prek]}" ;
        EXTRA_MSG=" (waiting for ${jids[$prek]})" ;
