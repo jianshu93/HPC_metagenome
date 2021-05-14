@@ -13,15 +13,15 @@
 # export PATh=${PATH}:/public4/home/sc53141/software/usearch
 b=$SAMPLE
 wd=${READ_DIR}
-db=$TARGET ;
+db=${TARGET_DIR} ;
 b_n=$(basename $b .fastq)
-t_n=$(basename $db .fa)
+t_n=${TARGET_NAME}
 mkdir -p results_ublast_${t_n}
 mkdir -p temp_ublast_${t_n}
 #---------------------------------------------------------------
 # ublast for reads
 # cd $wd
-/public4/home/sc53141/software/usearch/usearch -ublast ./${b} -db $db -evalue 1e-10 -accel 0.8 -strand both -threads 64 -query_cov 0.7 -maxaccepts 1 -blast6out temp_ublast_${t_n}/${b_n}_${t_n}_ublast_out
+/public4/home/sc53141/software/usearch/usearch -ublast ./${b} -db $db/${t_n}.fa -evalue 1e-10 -accel 0.8 -strand both -threads 64 -query_cov 0.7 -maxaccepts 1 -blast6out temp_ublast_${t_n}/${b_n}_${t_n}_ublast_out
 
 ## gene calculating
 cut -f2,4 temp_ublast_${t_n}/${b_n}_${t_n}_ublast_out | awk -F ' ' '{s[$1]+=$2} END{for(i in s) print(i,s[i])}' OFS='\t' | sort -k1,1 > temp_ublast_${t_n}/summed_alignment_length_${b_n}_${t_n}
